@@ -43,11 +43,12 @@ THIRD_PARTY_APPS = [
 
 
 LOCAL_APPS = [
+    "apps.users",
+    # Your stuff: custom apps go here ⬇
     "apps.articles",
     "apps.profiles",
     "apps.ratings",
     "apps.search",
-    "apps.users",
     # "apps.common",
     # "apps.bookmarks",
     # "apps.responses",
@@ -89,18 +90,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "blog_api.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ROOT_DIR / "db.sqlite3",
-    }
-}
 
-# DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES = {"default": env.db("DATABASE_URL")}
 
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.Argon2PasswordHasher",
@@ -133,8 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-# LANGUAGE_CODE = "en-us"
-
+# TODO : Change this to your language if you want
 LANGUAGE_CODE = "es-es"
 
 TIME_ZONE = "America/Buenos_Aires"
@@ -145,9 +138,8 @@ USE_TZ = True
 
 SITE_ID = 1
 
-# TODO: You can change this in production :)
-ADMIN_URL = "custom-admin-panel/"
-
+# TODO: You can change this from env file
+ADMIN_URL = env("DJANGO_ADMIN_URL")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
