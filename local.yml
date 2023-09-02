@@ -18,6 +18,7 @@ services:
         depends_on:
             - postgres
             - mailhog
+            - redis
         command: /start
         networks:
             - blog-api
@@ -56,6 +57,46 @@ services:
             - "8025:8025"
         networks:
             - blog-api
+    
+    redis:
+        image: redis:7-alpine
+        networks:
+            - blog-api
+
+    celery:
+        build:
+            context: .
+            dockerfile: ./docker/local/django/Dockerfile
+        command: /start-celeryworker
+        volumes:
+            - .:/app
+        env_file:
+            - ./.envs/.local/.django
+            - ./.envs/.local/.postgres
+        depends_on:
+            - redis
+            - postgres
+            - mailhog
+        networks:
+            - blog-api
+    
+    flower:
+        build:
+            context: .
+            dockerfile: ./docker/local/django/Dockerfile
+        command: /start-flower
+        volumes:
+            - flower_data:/flower
+        env_file:
+            - ./.envs/.local/.django
+            - ./.envs/.local/.postgres
+        ports:
+            - "5555:5555"
+        depends_on:
+            - redis
+            - postgres
+        networks:
+            - blog-api
 
 networks:
     blog-api:
@@ -66,3 +107,4 @@ volumes:
     media_volume:
     local_postgres_data: {}
     local_postgres_data_backups: {}
+    flower_data: {}

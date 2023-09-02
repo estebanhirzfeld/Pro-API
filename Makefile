@@ -32,7 +32,7 @@ volume:
 	docker volume inspect src_local_postgres_data
 
 blog-api-db:
-	docker compose -f local.yml exec postgres psql --username=stevennho --dbname=blog-api-db
+	docker compose -f local.yml exec postgres psql --username=postgres_user --dbname=blog-api-db
 
 flake8:
 	docker compose -f local.yml exec django flake8 .
