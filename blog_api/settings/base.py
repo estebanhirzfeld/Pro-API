@@ -1,5 +1,6 @@
 from pathlib import Path
 import environ
+from datetime import timedelta
 
 env = environ.Env()
 
@@ -20,6 +21,7 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
 ]
 
 THIRD_PARTY_APPS = [
@@ -48,13 +50,13 @@ LOCAL_APPS = [
     "apps.ratings",
     "apps.search",
     "apps.users",
-    # "apps.common",
+    "apps.common",
     # "apps.bookmarks",
     # "apps.responses",
 ]
 
 
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 
 MIDDLEWARE = [
@@ -201,6 +203,7 @@ CELERY_TASK_SEND_SENT_EVENT = True
 if USE_TZ:
     CELERY_TIMEZONE = TIME_ZONE
 
+# REST_FRAMEWORK
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
@@ -214,3 +217,37 @@ REST_FRAMEWORK = {
 }
 
 # SIMPLE_JWT
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES":("Bearer",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "SIGNING_KEY": env("SIGNING_KEY"),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+}
+
+# REST_AUTH
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "blog-access-token",
+    "JWT_AUTH_RESFRESH": "blog-refresh-token",
+    "REGISTER_SERIALIZER": "apps.users.serializers.CustomRegisterSerializer",
+}
+
+AUTHICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None 
+ACCOUNT_USERNAME_REQUIRED = False
+# TODO: Change these if username is it added later ⬆
+
+
