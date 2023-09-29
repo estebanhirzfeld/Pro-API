@@ -38,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CustomRegisterSerializer(RegisterSerializer):
-    username = None
+    username = serializers.CharField(required=True)  # Add this line for username
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
@@ -52,6 +52,7 @@ class CustomRegisterSerializer(RegisterSerializer):
             "first_name": self.validated_data.get("first_name", ""),
             "last_name": self.validated_data.get("last_name", ""),
             "password1": self.validated_data.get("password1", ""),
+            "username": self.validated_data.get("username", ""),  # Add this line
         }
 
     def save(self, request):
@@ -59,12 +60,14 @@ class CustomRegisterSerializer(RegisterSerializer):
         user = adapter.new_user(request)
         self.cleaned_data = self.get_cleaned_data()
         user = adapter.save_user(request, user, self)
+        user.username = self.cleaned_data.get("username")  # Set username
+        user.email = self.cleaned_data.get("email")
+        user.first_name = self.cleaned_data.get("first_name")
+        user.last_name = self.cleaned_data.get("last_name")
+        user.set_password(self.cleaned_data.get("password1"))  # Set password
+        
+        # Save the user instance
         user.save()
 
         setup_user_email(request, user, [])
-        user.email = self.cleaned_data.get("email")
-        user.password = self.cleaned_data.get("password1")
-        user.first_name = self.cleaned_data.get("first_name")
-        user.last_name = self.cleaned_data.get("last_name")
-
         return user

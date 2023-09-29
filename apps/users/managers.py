@@ -12,7 +12,7 @@ class CustomUserManager(BaseUserManager):
         except ValidationError:
             raise ValueError(_("You must provide a valid email address."))
 
-    def create_user(self, first_name, last_name, email, password, **extra_fields):
+    def create_user(self, first_name, last_name, email, username, password, **extra_fields):
         if not first_name:
             raise ValueError(_("Users must have a first name."))
         if not last_name:
@@ -22,9 +22,12 @@ class CustomUserManager(BaseUserManager):
             self.email_validator(email)
         else:
             raise ValueError(_("Users must have an email address."))
+        
+        if not username:
+            raise ValueError(_("Users must have a username."))
 
         user = self.model(
-            first_name=first_name, last_name=last_name, email=email, **extra_fields
+            first_name=first_name, last_name=last_name, email=email, username=username, **extra_fields
         )
         user.set_password(password)
 
@@ -34,7 +37,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, first_name, last_name, email, password, **extra_fields):
+    def create_superuser(self, first_name, last_name, email, username, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
@@ -53,7 +56,10 @@ class CustomUserManager(BaseUserManager):
             self.email_validator(email)
         else:
             raise ValueError(_("Superuser must have an email address."))
+        
+        if not username:
+            raise ValueError(_("Superuser must have a username."))
 
-        user = self.create_user(first_name, last_name, email, password, **extra_fields)
+        user = self.create_user(first_name, last_name, email, username, password, **extra_fields)
         user.save(using=self._db)
         return user

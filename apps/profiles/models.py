@@ -16,7 +16,6 @@ class Profile(TimeStampedModel):
         FEMALE = 'F', _('Female')
         OTHER = 'O', _('Other')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    username = models.CharField(verbose_name=_('username'), max_length=30, unique=True)
     gender = models.CharField(verbose_name=_('gender'), max_length=1, choices=Gender.choices, default=Gender.OTHER)
     phone_number = PhoneNumberField(verbose_name=_('phone_number'), max_length=30, blank=True, null=True)
     about_me = models.CharField(verbose_name=_("about me"), max_length=50)
@@ -29,6 +28,9 @@ class Profile(TimeStampedModel):
     def __str__(self):
         return f"{self.user.first_name}'s Profile"
     
+    def username(self):
+        return f"{self.user.first_name}"
+
     def follow(self, profile):
         self.followers.add(profile)
 

@@ -23,7 +23,8 @@ collectstatic:
 	docker compose -f local.yml run --rm django python manage.py collectstatic --no-input --clear
 
 superuser:
-	docker compose -f local.yml run --rm django python manage.py createsuperuser
+	# docker compose -f local.yml run --rm django python manage.py createsuperuser
+	docker compose -f local.yml run --rm django python manage.py custom_createsuperuser
 
 down-v:
 	docker compose -f local.yml down -v

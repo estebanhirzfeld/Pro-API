@@ -15,6 +15,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = [
         "pkid",
         "id",
+        "username",
         "email",
         "first_name",
         "last_name",
@@ -27,8 +28,8 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ["email", "is_staff", "is_active"]
 
     fieldsets = (
-        (_("Login Credentials"), {"fields": ("email", "password")}),
-        (_("Personal Info"), {"fields": ("first_name", "last_name")}),
+        (_("Login Credentials"), {"fields": ("email", "username", "password")}),
+        (_("Personal Info"), {"fields": ("first_name", "last_name",)}),
         (
             _("Permissions and Groups"),
             {
@@ -44,13 +45,15 @@ class UserAdmin(BaseUserAdmin):
         (_("Important Dates"), {"fields": ("last_login", "date_joined")}),
     )
     add_fieldsets = (
-        None,
-        {
+        ("Add User", {
             "classes": ("wide",),
-            "fields": ("email", "first_name", "last_name", "password1", "password2"),
-        },
+            "fields": ("email", "username", "first_name", "last_name", "password1", "password2"),
+        }),
     )
-    search_fields = ["email", "first_name", "last_name"]
+
+
+
+    search_fields = ["email", "username", "first_name", "last_name"]
 
 
 admin.site.register(User, UserAdmin)
