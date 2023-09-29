@@ -8,7 +8,7 @@ import environ
 # Local local
 env = environ.Env()
 # You can uncomment this for local development
-# environ.Env.read_env(env_file=".envs/.local/.django")
+environ.Env.read_env(env_file=".envs/.local/.django")
 
 
 
