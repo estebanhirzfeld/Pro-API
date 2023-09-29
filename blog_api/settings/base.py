@@ -7,7 +7,8 @@ import environ
 
 # Local local
 env = environ.Env()
-environ.Env.read_env(env_file=".envs/.local/.django")
+# You can uncomment this for local development
+# environ.Env.read_env(env_file=".envs/.local/.django")
 
 
 
@@ -199,7 +200,7 @@ AUTH_USER_MODEL = "users.User"
 
 # CELERY
 
-CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379")
+CELERY_BROKER_URL = env("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
