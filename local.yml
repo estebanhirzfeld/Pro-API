@@ -55,6 +55,8 @@ services:
         container_name: mailhog
         ports:
             - "8025:8025"
+        volumes:
+            - mailhog_data:/data
         networks:
             - blog-api
     
@@ -108,3 +110,4 @@ volumes:
     local_postgres_data: {}
     local_postgres_data_backups: {}
     flower_data: {}
+    mailhog_data: {}
