@@ -236,7 +236,7 @@ SIMPLE_JWT = {
 REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_COOKIE": "blog-access-token",
-    "JWT_AUTH_RESFRESH": "blog-refresh-token",
+    "JWT_AUTH_REFRESH_COOKIE": "blog-refresh-token",
     "REGISTER_SERIALIZER": "apps.users.serializers.CustomRegisterSerializer",
 }
 
