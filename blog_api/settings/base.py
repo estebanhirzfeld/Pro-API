@@ -17,9 +17,6 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
 APP_DIR = ROOT_DIR / "apps"
 
-
-ALLOWED_HOSTS = []
-
 # Application definition
 
 DJANGO_APPS = [
@@ -243,7 +240,7 @@ REST_AUTH = {
     "REGISTER_SERIALIZER": "apps.users.serializers.CustomRegisterSerializer",
 }
 
-AUTHICATION_BACKENDS = [
+AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
