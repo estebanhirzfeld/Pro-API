@@ -3,3 +3,4 @@ POSTGRES_PORT=5432
 POSTGRES_DB=blog-api-db
 POSTGRES_USER=postgres_user
 POSTGRES_PASSWORD=password
+DATABASE_URL=postgres://postgres_user:password@postgres:5432/blog-api-db
